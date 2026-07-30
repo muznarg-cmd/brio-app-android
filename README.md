@@ -57,6 +57,12 @@ Este repositório receberá gradualmente o código-fonte, a documentação técn
 
 🔬 [OCMT e BRIO — Pesquisa de Iniciação Científica](https://github.com/Muznarg-CMD/brio-pesquisa-ic)
 
+## Baixar o aplicativo
+
+📱 [Acessar a versão instalável do BRIO para Android](https://github.com/Muznarg-CMD/brio-app-android/releases)
+
+> A versão disponível é experimental e pode receber atualizações.
+
 ## Autora
 
 Desenvolvido por **Camila Espíndola**, estudante de Licenciatura em Linguagens, pesquisadora e desenvolvedora em formação.
