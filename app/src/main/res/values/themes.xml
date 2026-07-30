@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.BrioApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#7A8FA3</item>
+        <item name="colorPrimaryVariant">#5F7A91</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorSecondary">#A8C3A0</item>
+        <item name="colorOnSecondary">@android:color/black</item>
+        <item name="android:statusBarColor">#F5E6D3</item>
+        <item name="android:navigationBarColor">#F5E6D3</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowBackground">#F5E6D3</item>
+    </style>
+</resources>

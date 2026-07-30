@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#F5E6D3">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>BRIO — Sistema Cognitivo</title>
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   BRIO — CSS FOUNDATION
+   Retro-digital, warm, scrapbook aesthetic
+══════════════════════════════════════════ */
+:root{
+  --bg:     #FAFAF7;
+  --paper:  #F5E6D3;
+  --paper2: #EDE0CF;
+  --green:  #A8C3A0;
+  --green2: #8AAF82;
+  --blue:   #7A8FA3;
+  --blue2:  #5F7A91;
+  --ink:    #2C2C2C;
+  --ink2:   #555550;
+  --ink3:   #888880;
+  --window: #FAFAF7;
+  --bdr:    #C8B89A;
+  --bdr2:   #A89880;
+  --red:    #C97B6A;
+  --yellow: #D4A84B;
+  --r:      4px;
+  --shadow: 2px 2px 0 rgba(0,0,0,.12);
+  --shadow2:3px 3px 0 rgba(0,0,0,.16);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{height:100%;font-size:15px}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'DM Sans',sans-serif;
+  font-weight:400;
+  min-height:100vh;
+  overflow-x:hidden;
+  background-image:
+    radial-gradient(circle at 20% 80%,rgba(168,195,160,.15) 0%,transparent 50%),
+    radial-gradient(circle at 80% 20%,rgba(122,143,163,.1) 0%,transparent 50%);
+}
+
+/* ── TYPOGRAPHY ── */
+h1,h2,h3,.retro{font-family:'Special Elite',serif}
+code,.mono{font-family:'Courier Prime',monospace}
+.italic{font-family:'Courier Prime',monospace;font-style:italic}
+
+/* ── WINDOW CHROME (retro-os) ── */
+.win{
+  background:var(--window);
+  border:2px solid var(--bdr);
+  border-radius:var(--r);
+  box-shadow:var(--shadow2);
+  overflow:hidden;
+}
+.win-title{
+  background:var(--paper);
+  border-bottom:2px solid var(--bdr);
+  padding:.4rem .75rem;
+  display:flex;align-items:center;gap:.5rem;
+  font-family:'Courier Prime',monospace;font-size:.78rem;
+  color:var(--ink2);font-weight:700;letter-spacing:.04em;
+}
+.win-dot{width:10px;height:10px;border-radius:50%;border:1px solid var(--bdr2)}
+.win-dot.r{background:#C97B6A}.win-dot.y{background:#D4A84B}.win-dot.g{background:#A8C3A0}
+.win-body{padding:1rem}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.4rem .85rem;
+  border:2px solid var(--ink);
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Courier Prime',monospace;font-size:.78rem;font-weight:700;
+  border-radius:var(--r);cursor:pointer;
+  box-shadow:var(--shadow);transition:transform .1s,box-shadow .1s;
+  text-decoration:none;
+}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 rgba(0,0,0,.18)}
+.btn:active{transform:translate(1px,1px);box-shadow:none}
+.btn-green{background:var(--green);border-color:var(--green2)}
+.btn-blue{background:var(--blue);border-color:var(--blue2);color:#fff}
+.btn-red{background:var(--red);color:#fff;border-color:#a05040}
+.btn-big{padding:.65rem 1.5rem;font-size:.9rem}
+.btn-sm{padding:.25rem .6rem;font-size:.7rem}
+.btn-ico{padding:.4rem .5rem}
+.btn-full{width:100%;justify-content:center}
+
+/* ── INPUTS ── */
+.inp,.inp-ta{
+  width:100%;
+  background:var(--bg);
+  border:2px solid var(--bdr);
+  border-radius:var(--r);
+  padding:.55rem .8rem;
+  font-family:'DM Sans',sans-serif;font-size:.88rem;
+  color:var(--ink);outline:none;
+  transition:border-color .15s;
+}
+.inp:focus,.inp-ta:focus{border-color:var(--blue)}
+.inp-ta{resize:vertical;min-height:72px;line-height:1.6}
+.inp-label{
+  font-family:'Courier Prime',monospace;font-size:.7rem;
+  font-weight:700;letter-spacing:.06em;color:var(--ink2);
+  margin-bottom:.35rem;display:block;
+}
+
+/* ── TAGS ── */
+.tag{
+  display:inline-flex;align-items:center;
+  padding:.15rem .5rem;font-size:.68rem;
+  font-family:'Courier Prime',monospace;font-weight:700;
+  border:1.5px solid var(--bdr2);border-radius:2px;
+  background:var(--paper);color:var(--ink2);
+}
+.tag-g{background:rgba(168,195,160,.3);border-color:var(--green2);color:var(--green2)}
+.tag-b{background:rgba(122,143,163,.2);border-color:var(--blue2);color:var(--blue2)}
+.tag-r{background:rgba(201,123,106,.15);border-color:var(--red);color:var(--red)}
+.tag-y{background:rgba(212,168,75,.2);border-color:var(--yellow);color:#8a6520}
+
+/* ── APP SHELL ── */
+#app{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;position:relative}
+#topbar{
+  position:sticky;top:0;z-index:40;
+  background:var(--paper);
+  border-bottom:2px solid var(--bdr);
+  padding:.55rem 1rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.topbar-logo{font-family:'Special Elite',serif;font-size:1.35rem;color:var(--ink);letter-spacing:.05em;flex:1}
+.topbar-logo span{color:var(--blue2)}
+#main{flex:1;overflow-y:auto;padding-bottom:70px}
+#bottomnav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;
+  background:var(--paper);
+  border-top:2px solid var(--bdr);
+  display:flex;z-index:40;
+}
+.bnav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  padding:.45rem .25rem;cursor:pointer;
+  font-family:'Courier Prime',monospace;font-size:.58rem;
+  color:var(--ink3);gap:.1rem;transition:color .15s;
+  border-right:1px solid var(--bdr);
+}
+.bnav-item:last-child{border-right:none}
+.bnav-item.active{color:var(--blue2);background:rgba(122,143,163,.08)}
+.bnav-icon{font-size:1.1rem}
+
+/* ── PAGES ── */
+.page{display:none;padding:1rem;animation:fadeIn .2s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ── DASHBOARD ── */
+.dash-hero{
+  background:var(--paper);
+  border:2px solid var(--bdr);
+  border-radius:var(--r);
+  padding:1.25rem;
+  margin-bottom:1rem;
+  box-shadow:var(--shadow);
+  position:relative;overflow:hidden;
+}
+.dash-hero::before{
+  content:'BRIO';
+  position:absolute;right:-1rem;top:-1rem;
+  font-family:'Special Elite',serif;font-size:6rem;
+  color:rgba(122,143,163,.07);pointer-events:none;
+}
+.dash-date{font-family:'Courier Prime',monospace;font-size:.72rem;color:var(--ink3);margin-bottom:.35rem}
+.dash-greeting{font-family:'Special Elite',serif;font-size:1.5rem;margin-bottom:.1rem}
+.dash-sub{font-size:.82rem;color:var(--ink2)}
+.progress-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin:1rem 0}
+.prog-card{background:var(--paper);border:2px solid var(--bdr);border-radius:var(--r);padding:.75rem;text-align:center;box-shadow:var(--shadow)}
+.prog-n{font-family:'Special Elite',serif;font-size:1.6rem;color:var(--blue2)}
+.prog-l{font-family:'Courier Prime',monospace;font-size:.62rem;color:var(--ink3);margin-top:.1rem}
+.streak-bar{
+  background:var(--paper);border:2px solid var(--bdr);border-radius:var(--r);
+  padding:.85rem;margin-bottom:1rem;
+}
+.streak-label{font-family:'Courier Prime',monospace;font-size:.68rem;font-weight:700;color:var(--ink2);margin-bottom:.5rem}
+.streak-dots{display:flex;gap:.35rem}
+.sdot{
+  flex:1;height:8px;border-radius:2px;
+  background:var(--bg);border:1.5px solid var(--bdr);
+}
+.sdot.ok{background:var(--green);border-color:var(--green2)}
+.sdot.today{background:var(--blue);border-color:var(--blue2)}
+.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1rem}
+.qa-card{
+  background:var(--paper);border:2px solid var(--bdr);border-radius:var(--r);
+  padding:1rem;display:flex;flex-direction:column;gap:.5rem;
+  box-shadow:var(--shadow);cursor:pointer;transition:transform .1s,box-shadow .1s;
+}
+.qa-card:hover{transform:translate(-1px,-1px);box-shadow:var(--shadow2)}
+.qa-icon{font-size:1.5rem}
+.qa-title{font-family:'Courier Prime',monospace;font-size:.8rem;font-weight:700}
+.qa-sub{font-size:.73rem;color:var(--ink3);line-height:1.4}
+
+/* ── PARA / PKM ── */
+.para-folder{
+  background:var(--paper);border:2px solid var(--bdr);border-radius:var(--r);
+  margin-bottom:.75rem;overflow:hidden;box-shadow:var(--shadow);
+}
+.para-folder-head{
+  padding:.7rem 1rem;display:flex;align-items:center;gap:.6rem;
+  cursor:pointer;border-bottom:2px solid transparent;transition:.15s;
+}
+.para-folder-head:hover{background:var(--paper2)}
+.para-folder-head.open{border-bottom-color:var(--bdr)}
+.pf-icon{font-size:1.2rem;flex-shrink:0}
+.pf-label{font-family:'Courier Prime',monospace;font-size:.82rem;font-weight:700;flex:1}
+.pf-count{font-family:'Courier Prime',monospace;font-size:.7rem;color:var(--ink3)}
+.pf-arrow{font-size:.7rem;color:var(--ink3);transition:transform .2s}
+.pf-arrow.open{transform:rotate(90deg)}
+.para-folder-body{display:none;padding:.5rem}
+.para-folder-body.open{display:block}
+.para-item{
+  display:flex;align-items:flex-start;gap:.6rem;
+  padding:.6rem .75rem;border-radius:var(--r);
+  border:1.5px solid var(--bdr);background:var(--bg);
+  margin-bottom:.4rem;cursor:pointer;transition:.15s;
+}
+.para-item:hover{background:var(--paper);border-color:var(--blue)}
+.pi-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:.35rem;border:2px solid var(--bdr2)}
+.pi-content{flex:1;min-width:0}
+.pi-title{font-size:.85rem;font-weight:500}
+.pi-sub{font-size:.73rem;color:var(--ink3);margin-top:.1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pi-del{background:none;border:none;color:var(--ink3);font-size:.9rem;cursor:pointer;padding:.1rem;opacity:0;transition:.15s}
+.para-item:hover .pi-del{opacity:1}
+
+/* ── NOTE EDITOR ── */
+.note-section{margin-bottom:1rem}
+.note-field{
+  background:var(--bg);border:2px solid var(--bdr);border-radius:var(--r);
+  overflow:hidden;margin-bottom:.5rem;
+}
+.note-field-head{
+  padding:.45rem .75rem;background:var(--paper);
+  border-bottom:1.5px solid var(--bdr);
+  display:flex;align-items:center;gap:.5rem;cursor:pointer;
+}
+.nfh-icon{font-size:.9rem}
+.nfh-label{font-family:'Courier Prime',monospace;font-size:.7rem;font-weight:700;color:var(--ink2);flex:1}
+.nfh-hint{font-size:.65rem;color:var(--ink3);font-style:italic}
+.note-field-body{padding:.6rem .75rem;display:none}
+.note-field-body.open{display:block}
+.connections-list{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.35rem}
+.conn-tag{
+  display:flex;align-items:center;gap:.3rem;
+  background:var(--paper);border:1.5px solid var(--bdr);
+  border-radius:var(--r);padding:.2rem .5rem;
+  font-size:.72rem;font-family:'Courier Prime',monospace;cursor:pointer;
+}
+.conn-tag:hover{border-color:var(--red)}
+
+/* ── FLASHCARDS ── */
+.fc-card{
+  background:var(--paper);border:2px solid var(--bdr);border-radius:var(--r);
+  min-height:200px;display:flex;align-items:center;justify-content:center;
+  padding:1.5rem;text-align:center;box-shadow:var(--shadow2);
+  margin-bottom:1rem;position:relative;cursor:pointer;
+  transition:transform .3s;transform-style:preserve-3d;
+}
+.fc-front,.fc-back{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:1.5rem;
+  backface-visibility:hidden;border-radius:2px;
+}
+.fc-back{
+  background:var(--green);border-radius:var(--r);
+  transform:rotateY(180deg);
+}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-q{font-family:'Special Elite',serif;font-size:1.1rem;line-height:1.5;color:var(--ink)}
+.fc-label{font-family:'Courier Prime',monospace;font-size:.65rem;color:var(--ink3);margin-bottom:.5rem;letter-spacing:.1em;text-transform:uppercase}
+.fc-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin-bottom:1rem}
+.fc-rate{
+  border:2px solid var(--bdr);border-radius:var(--r);padding:.55rem;
+  text-align:center;cursor:pointer;background:var(--bg);
+  font-family:'Courier Prime',monospace;font-size:.72rem;
+  transition:.15s;
+}
+.fc-rate:hover{border-color:var(--ink)}
+.fc-rate.easy{background:var(--green);border-color:var(--green2)}
+.fc-rate.hard{background:var(--red);border-color:#a05040;color:#fff}
+.fc-empty{text-align:center;padding:2rem;color:var(--ink3);font-family:'Courier Prime',monospace;font-size:.82rem}
+
+/* ── GRAPH ── */
+#graph-canvas{
+  width:100%;height:340px;
+  background:var(--bg);border:2px solid var(--bdr);border-radius:var(--r);
+  margin-bottom:.75rem;position:relative;overflow:hidden;
+  touch-action:none;
+}
+.graph-node{
+  position:absolute;transform:translate(-50%,-50%);
+  background:var(--paper);border:2px solid var(--bdr2);
+  border-radius:var(--r);padding:.35rem .6rem;
+  font-family:'Courier Prime',monospace;font-size:.72rem;font-weight:700;
+  cursor:grab;white-space:nowrap;box-shadow:var(--shadow);
+  user-select:none;transition:border-color .15s;
+}
+.graph-node:hover{border-color:var(--blue)}
+.graph-node.selected{border-color:var(--blue2);background:rgba(122,143,163,.15)}
+.graph-node.central{border-color:var(--green2);background:rgba(168,195,160,.2)}
+svg.graph-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+
+/* ── FOCUS / POMODORO ── */
+.pomo-ring{
+  width:180px;height:180px;margin:1.5rem auto;
+  border-radius:50%;border:8px solid var(--bdr);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;background:var(--paper);
+}
+.pomo-ring svg{position:absolute;inset:-8px;width:calc(100%+16px);height:calc(100%+16px);transform:rotate(-90deg)}
+.pomo-ring circle{fill:none;stroke:var(--green);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset .5s linear}
+.pomo-time{font-family:'Special Elite',serif;font-size:2.2rem;color:var(--ink)}
+.pomo-label{font-family:'Courier Prime',monospace;font-size:.7rem;color:var(--ink3);margin-top:.25rem}
+.pomo-controls{display:flex;gap:.75rem;justify-content:center;margin-bottom:1.5rem}
+.focus-task{
+  background:var(--paper);border:2px solid var(--bdr);border-radius:var(--r);
+  padding:.85rem;margin-bottom:.75rem;
+}
+
+/* ── FEED ── */
+.feed-card{
+  background:var(--paper);border:2px solid var(--bdr);border-radius:var(--r);
+  margin-bottom:.85rem;box-shadow:var(--shadow);overflow:hidden;
+  position:relative;
+}
+/* scrapbook torn-paper effect */
+.feed-card::after{
+  content:'';position:absolute;bottom:-1px;left:0;right:0;height:4px;
+  background:repeating-linear-gradient(90deg,transparent,transparent 8px,var(--bg) 8px,var(--bg) 9px);
+}
+.fc-head{
+  padding:.75rem 1rem .4rem;display:flex;align-items:center;gap:.6rem;
+  border-bottom:1.5px dashed var(--bdr);
+}
+.fc-av{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--green);border:2px solid var(--bdr2);
+  display:flex;align-items:center;justify-content:center;font-size:.9rem;
+}
+.fc-meta{flex:1;min-width:0}
+.fc-author{font-family:'Courier Prime',monospace;font-size:.8rem;font-weight:700}
+.fc-time{font-size:.68rem;color:var(--ink3)}
+.fc-body{padding:.75rem 1rem .5rem;font-size:.88rem;line-height:1.65;color:var(--ink2)}
+.fc-question{
+  background:rgba(122,143,163,.1);border:1.5px solid var(--blue);
+  border-radius:var(--r);padding:.6rem .85rem;margin:.5rem 1rem;
+  font-family:'Courier Prime',monospace;font-size:.8rem;color:var(--ink);
+}
+.fc-actions{
+  display:flex;gap:.5rem;padding:.5rem .85rem .85rem;flex-wrap:wrap;
+}
+.fc-react{
+  border:1.5px solid var(--bdr2);border-radius:var(--r);
+  padding:.3rem .65rem;font-size:.72rem;
+  font-family:'Courier Prime',monospace;
+  background:var(--bg);cursor:pointer;transition:.15s;
+}
+.fc-react:hover{border-color:var(--ink);background:var(--paper)}
+.fc-react.active{background:var(--green);border-color:var(--green2)}
+.limit-warn{
+  background:rgba(201,123,106,.1);border:2px solid var(--red);
+  border-radius:var(--r);padding:.75rem 1rem;
+  font-family:'Courier Prime',monospace;font-size:.75rem;color:var(--red);
+  text-align:center;margin-bottom:1rem;
+}
+
+/* ── ANALYSIS / BIAS ── */
+.bias-meter{
+  background:var(--paper);border:2px solid var(--bdr);border-radius:var(--r);
+  padding:1rem;margin-bottom:.75rem;
+}
+.bias-bar-wrap{height:12px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:2px;margin:.35rem 0;overflow:hidden}
+.bias-fill{height:100%;border-radius:2px;transition:width .5s ease}
+.bias-label{font-family:'Courier Prime',monospace;font-size:.68rem;color:var(--ink2);display:flex;justify-content:space-between}
+
+/* ── MODAL ── */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(44,44,44,.55);
+  z-index:80;display:flex;align-items:flex-end;
+  padding-bottom:0;
+}
+.modal-bg.hidden{display:none}
+.modal{
+  background:var(--bg);border:2px solid var(--bdr);border-radius:var(--r) var(--r) 0 0;
+  width:100%;max-width:430px;margin:0 auto;
+  max-height:90vh;overflow-y:auto;
+  box-shadow:0 -4px 20px rgba(0,0,0,.2);
+}
+.modal-drag{width:36px;height:4px;background:var(--bdr2);border-radius:2px;margin:.6rem auto}
+.modal-head{
+  padding:.6rem 1rem;border-bottom:2px solid var(--bdr);
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--paper);
+}
+.modal-title{font-family:'Courier Prime',monospace;font-size:.88rem;font-weight:700}
+.modal-close{background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--ink3);padding:.2rem}
+.modal-body{padding:1rem}
+
+/* ── SETTINGS ── */
+.setting-row{
+  display:flex;align-items:center;gap:.75rem;
+  padding:.75rem;background:var(--paper);
+  border:1.5px solid var(--bdr);border-radius:var(--r);
+  margin-bottom:.5rem;
+}
+.toggle{
+  width:40px;height:22px;background:var(--bdr);border-radius:11px;
+  position:relative;cursor:pointer;flex-shrink:0;border:2px solid var(--bdr2);transition:.2s;
+}
+.toggle.on{background:var(--green);border-color:var(--green2)}
+.toggle::after{
+  content:'';position:absolute;top:2px;left:2px;
+  width:14px;height:14px;border-radius:50%;
+  background:#fff;border:1.5px solid var(--bdr2);transition:.2s;
+}
+.toggle.on::after{left:calc(100% - 16px - 2px)}
+
+/* ── ONBOARDING ── */
+#onboarding{
+  position:fixed;inset:0;background:var(--paper);z-index:100;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:2rem;text-align:center;
+}
+#onboarding.hidden{display:none}
+.ob-step{display:none}.ob-step.active{display:block}
+.ob-icon{font-size:4rem;margin-bottom:1rem}
+.ob-title{font-family:'Special Elite',serif;font-size:1.8rem;margin-bottom:.5rem}
+.ob-sub{font-size:.9rem;color:var(--ink2);margin-bottom:1.5rem;line-height:1.7;max-width:300px}
+.ob-dots{display:flex;gap:.5rem;justify-content:center;margin-top:1.5rem}
+.ob-dot{width:8px;height:8px;border-radius:50%;background:var(--bdr2);border:1.5px solid var(--bdr2)}
+.ob-dot.active{background:var(--blue2);border-color:var(--blue2)}
+
+/* ── PROFILE ── */
+.profile-card{
+  background:var(--paper);border:2px solid var(--bdr);
+  border-radius:var(--r);padding:1.25rem;margin-bottom:.75rem;
+  text-align:center;box-shadow:var(--shadow);
+}
+.pav{
+  width:72px;height:72px;border-radius:50%;
+  background:var(--green);border:3px solid var(--bdr2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;margin:0 auto .75rem;overflow:hidden;
+}
+.pav img{width:100%;height:100%;object-fit:cover}
+.p-name{font-family:'Special Elite',serif;font-size:1.25rem}
+.p-xp{
+  font-family:'Courier Prime',monospace;font-size:.7rem;color:var(--ink3);
+  margin:.35rem 0 .75rem;
+}
+.xp-bar{height:8px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:2px;overflow:hidden;margin-bottom:.1rem}
+.xp-fill{height:100%;background:var(--blue);border-radius:2px;transition:width .5s ease}
+.skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.75rem}
+.skill-item{
+  background:var(--bg);border:1.5px solid var(--bdr);border-radius:var(--r);
+  padding:.5rem .65rem;
+}
+.sk-name{font-family:'Courier Prime',monospace;font-size:.68rem;font-weight:700;margin-bottom:.35rem}
+.sk-bar{height:5px;background:var(--paper2);border-radius:2px;overflow:hidden}
+.sk-fill{height:100%;border-radius:2px}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bdr2);border-radius:2px}
+
+/* ── NOTIF ── */
+.toast{
+  position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-10px);
+  background:var(--ink);color:var(--paper);
+  padding:.5rem 1.1rem;border-radius:var(--r);
+  font-family:'Courier Prime',monospace;font-size:.78rem;
+  z-index:90;opacity:0;transition:.3s;pointer-events:none;
+  white-space:nowrap;box-shadow:var(--shadow2);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── MISC ── */
+.section-title{
+  font-family:'Courier Prime',monospace;font-size:.68rem;font-weight:700;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--ink3);
+  margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem;
+}
+.section-title::after{content:'';flex:1;height:1px;background:var(--bdr)}
+.divider{border:none;border-top:1.5px dashed var(--bdr);margin:1rem 0}
+.empty-state{
+  text-align:center;padding:2.5rem 1rem;
+  font-family:'Courier Prime',monospace;font-size:.82rem;color:var(--ink3);
+  border:2px dashed var(--bdr);border-radius:var(--r);background:var(--bg);
+}
+input[type=file]{display:none}
+select{
+  background:var(--bg);border:2px solid var(--bdr);border-radius:var(--r);
+  padding:.4rem .65rem;font-family:'DM Sans',sans-serif;font-size:.85rem;
+  color:var(--ink);outline:none;width:100%;
+}
+</style>
+</head>
+<body>
+
+<!-- ── ONBOARDING ── -->
+<div id="onboarding">
+  <div class="ob-step active" id="ob-0">
+    <div class="ob-icon">🧠</div>
+    <h1 class="ob-title">BRIO</h1>
+    <p class="ob-sub">Energia, vivacidade e força interna.<br>Seu sistema cognitivo pessoal — um caderno vivo que pensa com você.</p>
+    <button class="btn btn-big btn-blue" onclick="obNext()">Começar →</button>
+  </div>
+  <div class="ob-step" id="ob-1">
+    <div class="ob-icon">📁</div>
+    <h2 class="ob-title">Organize</h2>
+    <p class="ob-sub">O método PARA organiza seu conhecimento em <strong>Projetos</strong>, Áreas, Recursos e Arquivo — sem sobrecarregar sua mente.</p>
+    <button class="btn btn-big btn-green" onclick="obNext()">Próximo →</button>
+  </div>
+  <div class="ob-step" id="ob-2">
+    <div class="ob-icon">🔍</div>
+    <h2 class="ob-title">Pense Criticamente</h2>
+    <p class="ob-sub">Cada nota vai além do conteúdo: registre interpretação, contexto, limites e emoção. Pense, não apenas anote.</p>
+    <button class="btn btn-big btn-green" onclick="obNext()">Próximo →</button>
+  </div>
+  <div class="ob-step" id="ob-3">
+    <div class="ob-icon">🌿</div>
+    <h2 class="ob-title">Aprenda Ativo</h2>
+    <p class="ob-sub">Flashcards, mapas cognitivos, modo foco e uma rede social que usa "entendi" no lugar de likes. Sem dependência.</p>
+    <div>
+      <label class="inp-label">Seu nome</label>
+      <input class="inp" id="ob-name" placeholder="Como posso te chamar?">
+    </div>
+    <button class="btn btn-big btn-blue" onclick="obFinish()" style="margin-top:1rem">Entrar no BRIO →</button>
+  </div>
+  <div class="ob-dots" id="ob-dots">
+    <div class="ob-dot active"></div>
+    <div class="ob-dot"></div>
+    <div class="ob-dot"></div>
+    <div class="ob-dot"></div>
+  </div>
+</div>
+
+<!-- ── APP SHELL ── -->
+<div id="app">
+  <div id="topbar">
+    <div class="topbar-logo">B<span>R</span>IO</div>
+    <span id="topbar-date" class="mono" style="font-size:.72rem;color:var(--ink3)"></span>
+    <button class="btn btn-sm btn-ico" onclick="openModal('modal-quick-note')" title="Nova nota rápida">✏️</button>
+  </div>
+
+  <div id="main">
+
+    <!-- ══ DASHBOARD ══ -->
+    <div class="page active" id="pg-dash">
+      <div class="dash-hero">
+        <div class="dash-date" id="dash-date-txt">Carregando...</div>
+        <div class="dash-greeting" id="dash-greeting">Olá!</div>
+        <div class="dash-sub">O que você vai aprender hoje?</div>
+      </div>
+
+      <div class="progress-row">
+        <div class="prog-card"><div class="prog-n" id="d-notas">0</div><div class="prog-l">Notas</div></div>
+        <div class="prog-card"><div class="prog-n" id="d-cards">0</div><div class="prog-l">Cards</div></div>
+        <div class="prog-card"><div class="prog-n" id="d-streak">0</div><div class="prog-l">Dias</div></div>
+      </div>
+
+      <div class="streak-bar">
+        <div class="streak-label">ÚLTIMOS 7 DIAS</div>
+        <div class="streak-dots" id="streak-dots"></div>
+      </div>
+
+      <div class="section-title">ações rápidas</div>
+      <div class="quick-actions">
+        <div class="qa-card" onclick="goPage('notas');openModal('modal-note-new')">
+          <div class="qa-icon">✍️</div>
+          <div class="qa-title">Nova Nota</div>
+          <div class="qa-sub">Registre um pensamento com profundidade</div>
+        </div>
+        <div class="qa-card" onclick="goPage('cards');startStudy()">
+          <div class="qa-icon">🃏</div>
+          <div class="qa-title">Estudar</div>
+          <div class="qa-sub">Revisão espaçada dos seus flashcards</div>
+        </div>
+        <div class="qa-card" onclick="goPage('foco')">
+          <div class="qa-icon">🎯</div>
+          <div class="qa-title">Modo Foco</div>
+          <div class="qa-sub">Pomodoro + tarefa única</div>
+        </div>
+        <div class="qa-card" onclick="goPage('feed')">
+          <div class="qa-icon">📰</div>
+          <div class="qa-title">LearnFeed</div>
+          <div class="qa-sub">Posts educativos conscientes</div>
+        </div>
+      </div>
+
+      <div class="section-title">revisão pendente</div>
+      <div id="dash-review-list"></div>
+    </div>
+
+    <!-- ══ PKM / PARA ══ -->
+    <div class="page" id="pg-para">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+        <div class="section-title" style="margin:0;flex:1">sistema para</div>
+        <button class="btn btn-sm btn-green" onclick="openAddPKM()">+ Novo</button>
+      </div>
+      <div id="para-containers"></div>
+    </div>
+
+    <!-- ══ NOTAS ══ -->
+    <div class="page" id="pg-notas">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+        <div class="section-title" style="margin:0;flex:1">minhas notas</div>
+        <button class="btn btn-sm btn-green" onclick="openModal('modal-note-new')">+ Nova</button>
+      </div>
+      <div id="notes-list"></div>
+    </div>
+
+    <!-- ══ FLASHCARDS ══ -->
+    <div class="page" id="pg-cards">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+        <div class="section-title" style="margin:0;flex:1">flashcards</div>
+        <button class="btn btn-sm btn-green" onclick="openModal('modal-fc-new')">+ Criar</button>
+      </div>
+      <div id="fc-study-area"></div>
+      <div class="section-title">todos os cards</div>
+      <div id="fc-all-list"></div>
+    </div>
+
+    <!-- ══ GRAFO ══ -->
+    <div class="page" id="pg-grafo">
+      <div class="section-title">mapa cognitivo</div>
+      <div id="graph-canvas"></div>
+      <div style="display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap">
+        <button class="btn btn-sm btn-green" onclick="addGraphNode()">+ Nó</button>
+        <button class="btn btn-sm" onclick="graphMode='connect';toast('Clique em dois nós para conectar')">↔ Conectar</button>
+        <button class="btn btn-sm btn-red" onclick="graphMode='delete';toast('Clique em um nó para remover')">✕ Remover</button>
+        <button class="btn btn-sm" onclick="clearGraph()">⟳ Limpar</button>
+      </div>
+      <div class="win">
+        <div class="win-title"><div class="win-dot r"></div><div class="win-dot y"></div><div class="win-dot g"></div>Relações lógicas</div>
+        <div class="win-body" id="graph-relations" style="font-family:'Courier Prime',monospace;font-size:.78rem;color:var(--ink2)">
+          Nenhuma relação ainda. Adicione nós e conecte-os.
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ FOCO ══ -->
+    <div class="page" id="pg-foco">
+      <div class="section-title">modo foco</div>
+      <div class="focus-task">
+        <label class="inp-label">TAREFA DESTE POMODORO</label>
+        <input class="inp" id="focus-task-input" placeholder="O que você vai fazer nos próximos 25 min?">
+      </div>
+      <div class="pomo-ring">
+        <svg viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="88" stroke="var(--bdr)" stroke-width="8" fill="none"/>
+          <circle id="pomo-circle" cx="100" cy="100" r="88"
+            stroke-dasharray="553" stroke-dashoffset="0"
+            stroke="var(--green)" stroke-width="8" fill="none"
+            stroke-linecap="round"/>
+        </svg>
+        <div style="text-align:center">
+          <div class="pomo-time" id="pomo-display">25:00</div>
+          <div class="pomo-label" id="pomo-phase">FOCO</div>
+        </div>
+      </div>
+      <div class="pomo-controls">
+        <button class="btn btn-blue btn-big" id="pomo-btn" onclick="togglePomo()">▶ Iniciar</button>
+        <button class="btn" onclick="resetPomo()">↩ Reset</button>
+      </div>
+      <div class="win">
+        <div class="win-title"><div class="win-dot g"></div>Sessão sem ferramenta</div>
+        <div class="win-body">
+          <p style="font-size:.82rem;color:var(--ink2);margin-bottom:.75rem">Responda sem ver suas notas. Ativa a memória real.</p>
+          <input class="inp" id="no-tool-q" placeholder="Qual conceito você quer testar?">
+          <button class="btn btn-green btn-full" style="margin-top:.5rem" onclick="startNoTool()">Iniciar sessão mental</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ FEED ══ -->
+    <div class="page" id="pg-feed">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
+        <div class="section-title" style="margin:0;flex:1">learnfeed</div>
+        <button class="btn btn-sm btn-green" onclick="openModal('modal-feed-post')">+ Post</button>
+      </div>
+      <div id="feed-limit-warn" class="limit-warn" style="display:none">
+        📵 Você atingiu o limite diário de posts. Descanse sua mente!
+      </div>
+      <div id="feed-list"></div>
+    </div>
+
+    <!-- ══ ANÁLISE ══ -->
+    <div class="page" id="pg-analise">
+      <div class="section-title">análise cognitiva</div>
+      <div class="win" style="margin-bottom:1rem">
+        <div class="win-title"><div class="win-dot r"></div><div class="win-dot y"></div><div class="win-dot g"></div>Detector de Viés</div>
+        <div class="win-body">
+          <p style="font-size:.82rem;color:var(--ink2);margin-bottom:.85rem">Cole um texto para analisar possíveis vieses cognitivos.</p>
+          <textarea class="inp-ta" id="bias-input" placeholder="Cole aqui o texto, argumento ou conteúdo que deseja analisar..."></textarea>
+          <button class="btn btn-blue btn-full" style="margin-top:.5rem" onclick="analyzeBias()">🔍 Analisar vieses</button>
+        </div>
+      </div>
+      <div id="bias-result" style="display:none"></div>
+      <div class="win" style="margin-bottom:1rem">
+        <div class="win-title"><div class="win-dot y"></div>Ignorância Deliberada</div>
+        <div class="win-body">
+          <p style="font-size:.82rem;color:var(--ink2);margin-bottom:.85rem">Defina o que você escolhe conscientemente <em>não</em> consumir.</p>
+          <div id="ig-list" style="margin-bottom:.5rem"></div>
+          <div style="display:flex;gap:.5rem">
+            <input class="inp" id="ig-input" placeholder="Ex: discussões políticas no celular após 21h" style="flex:1">
+            <button class="btn btn-green" onclick="addIgnorancia()">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="win">
+        <div class="win-title"><div class="win-dot g"></div>Progresso Cognitivo</div>
+        <div class="win-body" id="cog-progress-box"></div>
+      </div>
+    </div>
+
+    <!-- ══ PERFIL ══ -->
+    <div class="page" id="pg-perfil">
+      <div class="section-title">meu perfil</div>
+      <div class="profile-card">
+        <div class="pav" id="profile-av-wrap" onclick="document.getElementById('av-file').click()">
+          <span id="profile-av-emoji">🧠</span>
+          <img id="profile-av-img" src="" alt="" style="display:none;width:72px;height:72px;border-radius:50%;object-fit:cover">
+        </div>
+        <input type="file" id="av-file" accept="image/*" onchange="loadProfileAv(this)">
+        <div class="p-name" id="profile-name-disp">—</div>
+        <div class="p-xp">Nível <span id="profile-level">1</span> · <span id="profile-xp">0</span> XP</div>
+        <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+        <div style="font-size:.68rem;color:var(--ink3);font-family:'Courier Prime',monospace;margin-top:.1rem" id="xp-next-label">0/100 XP para próximo nível</div>
+        <div class="skill-grid" id="skill-grid"></div>
+      </div>
+      <div class="section-title">configurações</div>
+      <div id="settings-list"></div>
+    </div>
+
+  </div><!-- /main -->
+
+  <!-- BOTTOM NAV -->
+  <nav id="bottomnav">
+    <div class="bnav-item active" onclick="goPage('dash')" id="nav-dash"><div class="bnav-icon">🏠</div><span>Início</span></div>
+    <div class="bnav-item" onclick="goPage('para')" id="nav-para"><div class="bnav-icon">📁</div><span>PARA</span></div>
+    <div class="bnav-item" onclick="goPage('cards')" id="nav-cards"><div class="bnav-icon">🃏</div><span>Cards</span></div>
+    <div class="bnav-item" onclick="goPage('feed')" id="nav-feed"><div class="bnav-icon">📰</div><span>Feed</span></div>
+    <div class="bnav-item" onclick="goPage('analise')" id="nav-analise"><div class="bnav-icon">🔬</div><span>Análise</span></div>
+    <div class="bnav-item" onclick="goPage('perfil')" id="nav-perfil"><div class="bnav-icon">👤</div><span>Perfil</span></div>
+  </nav>
+</div>
+
+<!-- ════════════ MODALS ════════════ -->
+
+<!-- Quick Note -->
+<div class="modal-bg hidden" id="modal-quick-note">
+  <div class="modal">
+    <div class="modal-drag"></div>
+    <div class="modal-head"><div class="modal-title">✏️ Nota Rápida</div><button class="modal-close" onclick="closeModal('modal-quick-note')">✕</button></div>
+    <div class="modal-body">
+      <input class="inp" id="qn-title" placeholder="Título" style="margin-bottom:.6rem">
+      <textarea class="inp-ta" id="qn-body" placeholder="Anote agora, aprofunde depois..."></textarea>
+      <select id="qn-folder" style="margin:.6rem 0">
+        <option value="recursos">📚 Recursos</option>
+        <option value="projetos">📌 Projetos</option>
+        <option value="areas">🗂 Áreas</option>
+        <option value="arquivo">🗃 Arquivo</option>
+      </select>
+      <button class="btn btn-green btn-full" onclick="saveQuickNote()">Salvar nota</button>
+    </div>
+  </div>
+</div>
+
+<!-- New Full Note -->
+<div class="modal-bg hidden" id="modal-note-new">
+  <div class="modal">
+    <div class="modal-drag"></div>
+    <div class="modal-head"><div class="modal-title">📝 Nova Nota Profunda</div><button class="modal-close" onclick="closeModal('modal-note-new')">✕</button></div>
+    <div class="modal-body">
+      <label class="inp-label">TÍTULO</label>
+      <input class="inp" id="nn-title" placeholder="Sobre o que é esta nota?" style="margin-bottom:.75rem">
+      <div class="note-field">
+        <div class="note-field-head" onclick="toggleField(this)"><span class="nfh-icon">📖</span><span class="nfh-label">Conteúdo</span><span class="nfh-hint">O que você aprendeu?</span></div>
+        <div class="note-field-body open"><textarea class="inp-ta" id="nn-content" placeholder="Conteúdo principal da nota..."></textarea></div>
+      </div>
+      <div class="note-field">
+        <div class="note-field-head" onclick="toggleField(this)"><span class="nfh-icon">🔍</span><span class="nfh-label">Interpretação Pessoal</span><span class="nfh-hint">O que isso significa para você?</span></div>
+        <div class="note-field-body"><textarea class="inp-ta" id="nn-interp" placeholder="Como você interpreta isso? Com o que isso ressoa?"></textarea></div>
+      </div>
+      <div class="note-field">
+        <div class="note-field-head" onclick="toggleField(this)"><span class="nfh-icon">🌍</span><span class="nfh-label">Contexto</span><span class="nfh-hint">Onde/quando se aplica?</span></div>
+        <div class="note-field-body"><textarea class="inp-ta" id="nn-context" placeholder="Em que contexto isso vale? Quando não vale?"></textarea></div>
+      </div>
+      <div class="note-field">
+        <div class="note-field-head" onclick="toggleField(this)"><span class="nfh-icon">⚠️</span><span class="nfh-label">Limitações</span><span class="nfh-hint">Onde isso falha?</span></div>
+        <div class="note-field-body"><textarea class="inp-ta" id="nn-limit" placeholder="Quais as limitações ou pontos fracos desta ideia?"></textarea></div>
+      </div>
+      <div class="note-field">
+        <div class="note-field-head" onclick="toggleField(this)"><span class="nfh-icon">❌</span><span class="nfh-label">Contraexemplo</span><span class="nfh-hint">Quando isso não funciona?</span></div>
+        <div class="note-field-body"><textarea class="inp-ta" id="nn-counter" placeholder="Dê um exemplo onde esta ideia seria falsa ou inadequada..."></textarea></div>
+      </div>
+      <div class="note-field">
+        <div class="note-field-head" onclick="toggleField(this)"><span class="nfh-icon">💛</span><span class="nfh-label">Reflexão Emocional</span><span class="nfh-hint">Como isso te faz sentir?</span></div>
+        <div class="note-field-body"><textarea class="inp-ta" id="nn-emotion" placeholder="Que emoção, memória ou sensação esta ideia evoca em você?"></textarea></div>
+      </div>
+      <div class="note-field">
+        <div class="note-field-head" onclick="toggleField(this)"><span class="nfh-icon">🔗</span><span class="nfh-label">Conexões</span><span class="nfh-hint">Liga a quê?</span></div>
+        <div class="note-field-body">
+          <div id="nn-connections-list" class="connections-list"></div>
+          <div style="display:flex;gap:.4rem;margin-top:.5rem">
+            <input class="inp" id="nn-conn-input" placeholder="Nome de outra nota..." style="flex:1">
+            <button class="btn btn-green btn-sm" onclick="addConnection()">+</button>
+          </div>
+        </div>
+      </div>
+      <select id="nn-folder" style="margin:.75rem 0">
+        <option value="recursos">📚 Recursos</option>
+        <option value="projetos">📌 Projetos</option>
+        <option value="areas">🗂 Áreas</option>
+        <option value="arquivo">🗃 Arquivo</option>
+      </select>
+      <button class="btn btn-green btn-full btn-big" onclick="saveFullNote()">💾 Salvar nota completa</button>
+    </div>
+  </div>
+</div>
+
+<!-- New Flashcard -->
+<div class="modal-bg hidden" id="modal-fc-new">
+  <div class="modal">
+    <div class="modal-drag"></div>
+    <div class="modal-head"><div class="modal-title">🃏 Novo Flashcard</div><button class="modal-close" onclick="closeModal('modal-fc-new')">✕</button></div>
+    <div class="modal-body">
+      <label class="inp-label">PERGUNTA / FRENTE</label>
+      <textarea class="inp-ta" id="fc-q-input" placeholder="O que você quer memorizar ou testar?"></textarea>
+      <label class="inp-label" style="margin-top:.75rem">RESPOSTA / VERSO</label>
+      <textarea class="inp-ta" id="fc-a-input" placeholder="Resposta, explicação ou conceito..."></textarea>
+      <select id="fc-cat" style="margin:.6rem 0">
+        <option value="geral">Geral</option>
+        <option value="ocmt">OCMT / Cognição</option>
+        <option value="pkm">PKM</option>
+        <option value="estudo">Estudo</option>
+      </select>
+      <button class="btn btn-green btn-full" onclick="saveFlashcard()">Salvar flashcard</button>
+    </div>
+  </div>
+</div>
+
+<!-- Feed Post -->
+<div class="modal-bg hidden" id="modal-feed-post">
+  <div class="modal">
+    <div class="modal-drag"></div>
+    <div class="modal-head"><div class="modal-title">📰 Novo Post</div><button class="modal-close" onclick="closeModal('modal-feed-post')">✕</button></div>
+    <div class="modal-body">
+      <textarea class="inp-ta" id="fp-body" placeholder="Compartilhe um insight, reflexão ou descoberta..."></textarea>
+      <label class="inp-label" style="margin-top:.6rem">PERGUNTA PARA A COMUNIDADE (opcional)</label>
+      <input class="inp" id="fp-question" placeholder="Qual dúvida isso levanta?">
+      <div style="display:flex;gap:.5rem;margin-top:.75rem">
+        <button class="btn btn-sm" id="fp-type-btn" onclick="cycleFpType()">💭 Reflexão</button>
+        <span style="font-size:.72rem;color:var(--ink3);align-self:center;font-family:'Courier Prime',monospace">tipo de post</span>
+      </div>
+      <button class="btn btn-green btn-full" style="margin-top:.75rem" onclick="publishPost()">Publicar →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add PKM Item -->
+<div class="modal-bg hidden" id="modal-pkm-add">
+  <div class="modal">
+    <div class="modal-drag"></div>
+    <div class="modal-head"><div class="modal-title" id="pkm-add-title">+ Novo Item</div><button class="modal-close" onclick="closeModal('modal-pkm-add')">✕</button></div>
+    <div class="modal-body">
+      <input class="inp" id="pkm-a-title" placeholder="Título" style="margin-bottom:.6rem">
+      <textarea class="inp-ta" id="pkm-a-desc" placeholder="Descrição, detalhes, link..."></textarea>
+      <input type="hidden" id="pkm-a-folder">
+      <button class="btn btn-green btn-full" style="margin-top:.75rem" onclick="savePKMItem()">Adicionar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Note View -->
+<div class="modal-bg hidden" id="modal-note-view">
+  <div class="modal">
+    <div class="modal-drag"></div>
+    <div class="modal-head">
+      <div class="modal-title" id="nv-title">Nota</div>
+      <div style="display:flex;gap:.35rem">
+        <button class="btn btn-sm" onclick="genFlashcardFromNote()" title="Gerar flashcard">🃏</button>
+        <button class="btn btn-sm btn-red" onclick="deleteCurrentNote()">✕</button>
+        <button class="modal-close" onclick="closeModal('modal-note-view')">—</button>
+      </div>
+    </div>
+    <div class="modal-body" id="nv-body"></div>
+  </div>
+</div>
+
+<!-- No Tool Session -->
+<div class="modal-bg hidden" id="modal-no-tool">
+  <div class="modal">
+    <div class="modal-drag"></div>
+    <div class="modal-head"><div class="modal-title">🧠 Sessão Mental</div><button class="modal-close" onclick="closeModal('modal-no-tool')">✕</button></div>
+    <div class="modal-body">
+      <div style="background:rgba(168,195,160,.15);border:1.5px solid var(--green2);border-radius:var(--r);padding:.85rem;margin-bottom:1rem">
+        <div style="font-family:'Courier Prime',monospace;font-size:.72rem;font-weight:700;margin-bottom:.35rem">DESAFIO:</div>
+        <div id="nt-challenge" style="font-size:.92rem;line-height:1.6"></div>
+      </div>
+      <p style="font-size:.8rem;color:var(--ink3);font-family:'Courier Prime',monospace;margin-bottom:.75rem">Responda sem consultar nada. Use apenas o que você já sabe.</p>
+      <textarea class="inp-ta" id="nt-answer" placeholder="Sua resposta aqui..."></textarea>
+      <button class="btn btn-blue btn-full" style="margin-top:.75rem" onclick="submitNoTool()">Registrar resposta</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast-notif"></div>
+
+<script>
+/* ═══════════════════════════════════════
+   BRIO — APP STATE & LOGIC
+═══════════════════════════════════════ */
+const KEY='brio_v3';
+const PARA_META={
+  projetos:{label:'Projetos',icon:'📌',color:'var(--red)',desc:'Com prazo e resultado'},
+  areas:{label:'Áreas',icon:'🗂',color:'var(--yellow)',desc:'Responsabilidades contínuas'},
+  recursos:{label:'Recursos',icon:'📚',color:'var(--green2)',desc:'Referências e interesses'},
+  arquivo:{label:'Arquivo',icon:'🗃',color:'var(--ink3)',desc:'Material inativo'},
+};
+let S={
+  onboarded:false, name:'', xp:0,
+  pkm:{projetos:[],areas:[],recursos:[],arquivo:[]},
+  notes:[],
+  flashcards:[
+    {id:'fc1',q:'O que é cognição distribuída?',a:'O pensamento ocorre em rede entre sujeito, artefatos e ambiente — não apenas na mente individual. (Hutchins, 1995)',cat:'ocmt',ease:0,nextReview:0,count:0},
+    {id:'fc2',q:'Qual a diferença entre PKM e simples organização digital?',a:'PKM é infraestrutura de externalização semântica: organiza para AGIR, não para acumular. Reduz custo epistêmico.',cat:'pkm',ease:0,nextReview:0,count:0},
+    {id:'fc3',q:'O que é inibição saudável na OCMT?',a:'Ignorância deliberada: filtrar conscientemente o que não consumir, protegendo atenção e autonomia cognitiva.',cat:'ocmt',ease:0,nextReview:0,count:0},
+  ],
+  feed:[
+    {id:'f1',author:'Beatriz C.',av:'📖',type:'reflexao',body:'A metacognição não é um talento — é uma prática. Todo dia você pode aprender a pensar melhor sobre como você pensa.',question:'Você já parou para observar como você aprende?',reactions:{entendi:14,duvida:3,exemplo:7},myReaction:null,time:'2h'},
+    {id:'f2',author:'Lucas F.',av:'🧩',type:'insight',body:'Escrever sobre o que você aprendeu é mais eficaz do que reler. A geração ativa de memória supera a revisão passiva em 80% dos estudos.',question:'Quando foi a última vez que você escreveu sobre algo que aprendeu?',reactions:{entendi:31,duvida:5,exemplo:12},myReaction:null,time:'5h'},
+  ],
+  graph:{nodes:[
+    {id:'g1',label:'OCMT',x:50,y:40},
+    {id:'g2',label:'PKM',x:78,y:28},
+    {id:'g3',label:'Cognição Distribuída',x:22,y:62},
+    {id:'g4',label:'Metacognição',x:72,y:65},
+  ],edges:[['g1','g2'],['g1','g3'],['g1','g4'],['g2','g4']]},
+  pomo:{running:false,phase:'focus',remaining:25*60,sessions:0},
+  ignorancias:[],
+  settings:{limitFeed:true,dailyReminder:true,offlineMode:false},
+  streak:[false,true,true,false,true,true,false],
+  feedPostsToday:0, feedPostDate:'',
+  nextId:100,
+};
+function ls(){try{const d=localStorage.getItem(KEY);if(d){const p=JSON.parse(d);S={...S,...p};}}catch{}}
+function ss(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch{}}
+ls();
+
+/* ── TOAST ── */
+function toast(msg,dur=2200){
+  const t=document.getElementById('toast-notif');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
+
+/* ── ONBOARDING ── */
+let obStep=0;
+function obNext(){
+  const steps=document.querySelectorAll('.ob-step');
+  const dots=document.querySelectorAll('.ob-dot');
+  steps[obStep].classList.remove('active');
+  dots[obStep].classList.remove('active');
+  obStep=Math.min(obStep+1,steps.length-1);
+  steps[obStep].classList.add('active');
+  dots[obStep].classList.add('active');
+}
+function obFinish(){
+  const n=document.getElementById('ob-name').value.trim()||'Estudante';
+  S.name=n;S.onboarded=true;ss();
+  document.getElementById('onboarding').classList.add('hidden');
+  initApp();
+}
+if(S.onboarded){document.getElementById('onboarding').classList.add('hidden');initApp();}
+
+/* ── INIT ── */
+function initApp(){
+  renderDash();renderPARA();renderNotes();renderFlashcards();
+  renderFeed();renderGraph();renderAnalise();renderProfile();
+  updateTopDate();
+}
+
+/* ── NAV ── */
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('pg-'+id).classList.add('active');
+  const nb=document.getElementById('nav-'+id);
+  if(nb)nb.classList.add('active');
+  document.getElementById('main').scrollTo(0,0);
+  if(id==='grafo')renderGraph();
+  if(id==='analise')renderAnalise();
+  if(id==='perfil')renderProfile();
+}
+
+/* ── MODALS ── */
+function openModal(id){document.getElementById(id).classList.remove('hidden');}
+function closeModal(id){document.getElementById(id).classList.add('hidden');}
+document.querySelectorAll('.modal-bg').forEach(m=>{
+  m.addEventListener('click',e=>{if(e.target===m)m.classList.add('hidden');});
+});
+
+/* ── DATE ── */
+function updateTopDate(){
+  const d=new Date();
+  const opts={weekday:'short',day:'2-digit',month:'short'};
+  document.getElementById('topbar-date').textContent=d.toLocaleDateString('pt-BR',opts);
+  const dsub=document.getElementById('dash-date-txt');
+  if(dsub)dsub.textContent=d.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});
+  const greet=document.getElementById('dash-greeting');
+  if(greet){
+    const h=d.getHours();
+    const g=h<12?'Bom dia':h<18?'Boa tarde':'Boa noite';
+    const msg=h<12?'Bom dia':h<18?'Boa tarde':'Boa noite';
+    const hr=h;
+    greet.textContent=(hr<12?'Bom dia':hr<18?'Boa tarde':'Boa noite')+', '+S.name+'!';
+  }
+}
+// fix the string error above
+(function fixGreeting(){
+  const g=document.getElementById('dash-greeting');
+  if(!g)return;
+  const h=new Date().getHours();
+  const greet=h<12?'Bom dia':h<18?'Boa tarde':'Boa noite';
+  g.textContent=greet+', '+(S.name||'estudante')+'!';
+  const s=document.getElementById('dash-sub');
+  if(s)s.textContent=h<12?'Que tal começar com uma nota?':h<18?'Hora de estudar com foco.':'Revise antes de dormir.';
+})();
+
+/* ══ DASHBOARD ══ */
+function renderDash(){
+  document.getElementById('d-notas').textContent=S.notes.length;
+  document.getElementById('d-cards').textContent=S.flashcards.length;
+  const streak=S.streak.filter(Boolean).length;
+  document.getElementById('d-streak').textContent=streak;
+  // streak dots
+  const sd=document.getElementById('streak-dots');
+  sd.innerHTML=S.streak.map((ok,i)=>`<div class="sdot ${ok?'ok':''} ${i===6?'today':''}"></div>`).join('');
+  // review list
+  const now=Date.now();
+  const due=S.flashcards.filter(c=>c.nextReview<=now).slice(0,3);
+  const rl=document.getElementById('dash-review-list');
+  if(due.length===0){rl.innerHTML=`<div class="empty-state">✨ Nada para revisar agora</div>`;return;}
+  rl.innerHTML=due.map(c=>`
+    <div class="para-item" onclick="goPage('cards');startStudy()">
+      <div class="pi-dot" style="background:var(--yellow);border-color:var(--yellow)"></div>
+      <div class="pi-content"><div class="pi-title">${c.q.substring(0,55)}...</div><div class="pi-sub">Para revisão · ${c.cat}</div></div>
+      <div style="font-size:.7rem;color:var(--yellow);font-family:'Courier Prime',monospace">→ Revisar</div>
+    </div>`).join('');
+}
+
+/* ══ PARA ══ */
+function renderPARA(){
+  const c=document.getElementById('para-containers');
+  c.innerHTML=Object.entries(PARA_META).map(([k,m])=>{
+    const items=S.pkm[k]||[];
+    return `<div class="para-folder">
+      <div class="para-folder-head" onclick="toggleFolder(this,'${k}')">
+        <span class="pf-icon">${m.icon}</span>
+        <span class="pf-label" style="color:${m.color}">${m.label}</span>
+        <span class="pf-count">${items.length} itens</span>
+        <span class="pf-arrow">▶</span>
+      </div>
+      <div class="para-folder-body" id="para-body-${k}">
+        <button class="btn btn-sm btn-green" style="margin-bottom:.5rem;width:100%" onclick="openAddPKMFolder('${k}','${m.label}')">+ Adicionar em ${m.label}</button>
+        ${items.length?items.map(it=>`
+          <div class="para-item" id="pi-${it.id}">
+            <div class="pi-dot" style="background:${m.color};border-color:${m.color}"></div>
+            <div class="pi-content"><div class="pi-title">${it.title}</div><div class="pi-sub">${it.desc||'—'}</div></div>
+            <button class="pi-del" onclick="delPKMItem('${k}',${it.id},event)">✕</button>
+          </div>`).join(''):`<div class="empty-state" style="padding:1rem">Nenhum item</div>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+function toggleFolder(el,key){
+  el.classList.toggle('open');
+  el.querySelector('.pf-arrow').classList.toggle('open');
+  document.getElementById('para-body-'+key).classList.toggle('open');
+}
+function openAddPKM(){
+  document.getElementById('pkm-add-title').textContent='+ Novo item';
+  document.getElementById('pkm-a-folder').value='recursos';
+  openModal('modal-pkm-add');
+}
+function openAddPKMFolder(folder,label){
+  document.getElementById('pkm-add-title').textContent='+ Adicionar em '+label;
+  document.getElementById('pkm-a-folder').value=folder;
+  document.getElementById('pkm-a-title').value='';
+  document.getElementById('pkm-a-desc').value='';
+  openModal('modal-pkm-add');
+}
+function savePKMItem(){
+  const title=document.getElementById('pkm-a-title').value.trim();
+  const desc=document.getElementById('pkm-a-desc').value.trim();
+  const folder=document.getElementById('pkm-a-folder').value;
+  if(!title){toast('Digite um título!');return;}
+  S.pkm[folder].push({id:S.nextId++,title,desc});
+  earnXP(5);ss();renderPARA();closeModal('modal-pkm-add');toast('Item adicionado! 📁');
+}
+function delPKMItem(folder,id,e){
+  e.stopPropagation();
+  S.pkm[folder]=S.pkm[folder].filter(x=>x.id!==id);
+  ss();renderPARA();toast('Removido');
+}
+
+/* ══ NOTAS ══ */
+let currentNoteId=null;
+let pendingConnections=[];
+function toggleField(head){
+  head.parentElement.querySelector('.note-field-body').classList.toggle('open');
+}
+function addConnection(){
+  const v=document.getElementById('nn-conn-input').value.trim();
+  if(!v)return;
+  if(!pendingConnections.includes(v))pendingConnections.push(v);
+  document.getElementById('nn-conn-input').value='';
+  renderPendingConnections();
+}
+function renderPendingConnections(){
+  const c=document.getElementById('nn-connections-list');
+  c.innerHTML=pendingConnections.map((conn,i)=>`
+    <div class="conn-tag" onclick="pendingConnections.splice(${i},1);renderPendingConnections()">
+      🔗 ${conn} ✕
+    </div>`).join('');
+}
+function saveQuickNote(){
+  const title=document.getElementById('qn-title').value.trim();
+  const content=document.getElementById('qn-body').value.trim();
+  const folder=document.getElementById('qn-folder').value;
+  if(!title&&!content){toast('Escreva algo!');return;}
+  const note={id:S.nextId++,title:title||'Nota rápida',content,folder,date:new Date().toLocaleDateString('pt-BR'),interp:'',context:'',limit:'',counter:'',emotion:'',connections:[]};
+  S.notes.unshift(note);
+  S.pkm[folder].push({id:S.nextId++,title:note.title,desc:'Nota: '+note.date});
+  earnXP(10);ss();renderNotes();renderPARA();renderDash();
+  closeModal('modal-quick-note');
+  document.getElementById('qn-title').value='';document.getElementById('qn-body').value='';
+  toast('Nota salva! ✍️');
+}
+function saveFullNote(){
+  const title=document.getElementById('nn-title').value.trim();
+  const content=document.getElementById('nn-content').value.trim();
+  if(!title){toast('Dê um título à nota!');return;}
+  const note={
+    id:S.nextId++,title,content,
+    interp:document.getElementById('nn-interp').value.trim(),
+    context:document.getElementById('nn-context').value.trim(),
+    limit:document.getElementById('nn-limit').value.trim(),
+    counter:document.getElementById('nn-counter').value.trim(),
+    emotion:document.getElementById('nn-emotion').value.trim(),
+    connections:[...pendingConnections],
+    folder:document.getElementById('nn-folder').value,
+    date:new Date().toLocaleDateString('pt-BR'),
+  };
+  S.notes.unshift(note);
+  earnXP(20);ss();renderNotes();renderDash();
+  closeModal('modal-note-new');pendingConnections=[];
+  ['nn-title','nn-content','nn-interp','nn-context','nn-limit','nn-counter','nn-emotion'].forEach(id=>document.getElementById(id).value='');
+  toast('Nota profunda salva! 🧠 +20 XP');
+}
+function renderNotes(){
+  const c=document.getElementById('notes-list');
+  if(!S.notes.length){c.innerHTML=`<div class="empty-state">Nenhuma nota ainda.<br>Crie sua primeira nota!</div>`;return;}
+  c.innerHTML=S.notes.map(n=>`
+    <div class="para-item" onclick="viewNote(${n.id})" style="margin-bottom:.5rem">
+      <div class="pi-dot" style="background:var(--blue2);border-color:var(--blue)"></div>
+      <div class="pi-content">
+        <div class="pi-title">${n.title}</div>
+        <div class="pi-sub">${n.date} · ${n.folder}${n.emotion?' · 💛':''}</div>
+      </div>
+      ${n.connections.length?`<span class="tag tag-b">🔗${n.connections.length}</span>`:''}
+    </div>`).join('');
+}
+function viewNote(id){
+  const n=S.notes.find(x=>x.id===id);if(!n)return;
+  currentNoteId=id;
+  document.getElementById('nv-title').textContent=n.title;
+  const fields=[
+    ['📖 Conteúdo',n.content],['🔍 Interpretação',n.interp],
+    ['🌍 Contexto',n.context],['⚠️ Limitações',n.limit],
+    ['❌ Contraexemplo',n.counter],['💛 Emoção',n.emotion],
+  ].filter(([,v])=>v);
+  document.getElementById('nv-body').innerHTML=`
+    <div style="font-size:.72rem;color:var(--ink3);font-family:'Courier Prime',monospace;margin-bottom:1rem">${n.date} · ${n.folder}</div>
+    ${fields.map(([l,v])=>`<div style="margin-bottom:.85rem"><div style="font-family:'Courier Prime',monospace;font-size:.68rem;font-weight:700;color:var(--ink2);margin-bottom:.3rem">${l}</div><div style="font-size:.88rem;line-height:1.65;color:var(--ink2)">${v}</div></div>`).join('')}
+    ${n.connections.length?`<div class="connections-list">${n.connections.map(c=>`<div class="conn-tag">🔗 ${c}</div>`).join('')}</div>`:''} `;
+  openModal('modal-note-view');
+}
+function deleteCurrentNote(){
+  if(!currentNoteId)return;
+  S.notes=S.notes.filter(x=>x.id!==currentNoteId);
+  ss();renderNotes();renderDash();closeModal('modal-note-view');toast('Nota removida');
+}
+function genFlashcardFromNote(){
+  const n=S.notes.find(x=>x.id===currentNoteId);if(!n)return;
+  S.flashcards.push({id:'fc'+S.nextId++,q:'O que você sabe sobre: '+n.title+'?',a:n.content||n.interp||'Veja suas notas.',cat:'geral',ease:0,nextReview:0,count:0});
+  earnXP(5);ss();renderFlashcards();closeModal('modal-note-view');toast('Flashcard criado! 🃏');
+}
+
+/* ══ FLASHCARDS ══ */
+let fcStudyQueue=[],fcCurrent=null,fcFlipped=false;
+function startStudy(){
+  const now=Date.now();
+  fcStudyQueue=[...S.flashcards.filter(c=>c.nextReview<=now)];
+  if(!fcStudyQueue.length)fcStudyQueue=[...S.flashcards].slice(0,5);
+  fcFlipped=false;renderStudyCard();
+}
+function renderFlashcards(){
+  renderStudyCard();
+  const all=document.getElementById('fc-all-list');
+  if(!S.flashcards.length){all.innerHTML=`<div class="empty-state">Crie seu primeiro flashcard!</div>`;return;}
+  all.innerHTML=S.flashcards.map(c=>`
+    <div class="para-item">
+      <div class="pi-dot" style="background:var(--yellow);border-color:var(--yellow)"></div>
+      <div class="pi-content"><div class="pi-title">${c.q.substring(0,60)}${c.q.length>60?'...':''}</div><div class="pi-sub">${c.cat} · count:${c.count}</div></div>
+      <button class="pi-del" onclick="deleteCard('${c.id}',event)">✕</button>
+    </div>`).join('');
+}
+function renderStudyCard(){
+  const area=document.getElementById('fc-study-area');
+  if(!fcStudyQueue.length){
+    area.innerHTML=`<div class="empty-state">Nenhum card para revisar agora!<br><button class="btn btn-green" style="margin-top:.5rem" onclick="startStudy()">Estudar todos</button></div>`;
+    return;
+  }
+  fcCurrent=fcStudyQueue[0];fcFlipped=false;
+  const total=S.flashcards.length,idx=total-fcStudyQueue.length+1;
+  area.innerHTML=`
+    <div style="font-family:'Courier Prime',monospace;font-size:.7rem;color:var(--ink3);margin-bottom:.5rem;text-align:center">${idx}/${total} · ${fcCurrent.cat}</div>
+    <div class="fc-card" id="fc-active" onclick="flipCard()">
+      <div class="fc-front">
+        <div class="fc-label">PERGUNTA</div>
+        <div class="fc-q">${fcCurrent.q}</div>
+        <div style="font-size:.72rem;color:var(--ink3);margin-top:1rem;font-family:'Courier Prime',monospace">toque para revelar</div>
+      </div>
+      <div class="fc-back">
+        <div class="fc-label" style="color:rgba(44,44,44,.6)">RESPOSTA</div>
+        <div class="fc-q" style="color:var(--ink)">${fcCurrent.a}</div>
+      </div>
+    </div>
+    <div class="fc-actions" id="fc-rate-area" style="display:none">
+      <div class="fc-rate" onclick="rateCard(0)">😰 Difícil</div>
+      <div class="fc-rate" onclick="rateCard(1)">🤔 Ok</div>
+      <div class="fc-rate easy" onclick="rateCard(2)">😊 Fácil</div>
+    </div>`;
+}
+function flipCard(){
+  const el=document.getElementById('fc-active');
+  if(!el)return;
+  fcFlipped=!fcFlipped;
+  el.classList.toggle('flipped',fcFlipped);
+  document.getElementById('fc-rate-area').style.display=fcFlipped?'grid':'none';
+}
+function rateCard(ease){
+  if(!fcCurrent)return;
+  const c=S.flashcards.find(x=>x.id===fcCurrent.id);
+  if(c){
+    c.ease=ease;c.count=(c.count||0)+1;
+    const intervals=[1,3,7];
+    c.nextReview=Date.now()+(intervals[ease]||1)*86400000;
+  }
+  fcStudyQueue.shift();earnXP(3);ss();renderStudyCard();
+  if(fcStudyQueue.length===0)toast('Revisão completa! 🎉 +XP');
+}
+function saveFlashcard(){
+  const q=document.getElementById('fc-q-input').value.trim();
+  const a=document.getElementById('fc-a-input').value.trim();
+  if(!q||!a){toast('Preencha pergunta e resposta!');return;}
+  S.flashcards.push({id:'fc'+S.nextId++,q,a,cat:document.getElementById('fc-cat').value,ease:0,nextReview:0,count:0});
+  earnXP(5);ss();renderFlashcards();renderDash();
+  closeModal('modal-fc-new');
+  document.getElementById('fc-q-input').value='';document.getElementById('fc-a-input').value='';
+  toast('Flashcard criado! 🃏');
+}
+function deleteCard(id,e){
+  e.stopPropagation();S.flashcards=S.flashcards.filter(c=>c.id!==id);
+  ss();renderFlashcards();toast('Card removido');
+}
+
+/* ══ GRAFO ══ */
+let graphMode='add',selectedNode=null,dragging=null,dragOff={x:0,y:0};
+function renderGraph(){
+  const canvas=document.getElementById('graph-canvas');
+  canvas.innerHTML='';
+  const W=canvas.offsetWidth||320,H=canvas.offsetHeight||340;
+  // svg edges
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.classList.add('graph-svg');
+  S.graph.edges.forEach(([a,b])=>{
+    const na=S.graph.nodes.find(n=>n.id===a);
+    const nb=S.graph.nodes.find(n=>n.id===b);
+    if(!na||!nb)return;
+    const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',na.x/100*W);line.setAttribute('y1',na.y/100*H);
+    line.setAttribute('x2',nb.x/100*W);line.setAttribute('y2',nb.y/100*H);
+    line.setAttribute('stroke','#C8B89A');line.setAttribute('stroke-width','2');
+    line.setAttribute('stroke-dasharray','4,3');
+    svg.appendChild(line);
+  });
+  canvas.appendChild(svg);
+  // nodes
+  S.graph.nodes.forEach(node=>{
+    const div=document.createElement('div');
+    div.className='graph-node'+(node.id===selectedNode?' selected':'');
+    if(node.id===S.graph.nodes[0]?.id)div.classList.add('central');
+    div.textContent=node.label;
+    div.style.left=(node.x)+'%';div.style.top=(node.y)+'%';
+    div.dataset.id=node.id;
+    div.addEventListener('pointerdown',startDrag);
+    div.addEventListener('click',nodeClick);
+    canvas.appendChild(div);
+  });
+  // relations
+  const rl=document.getElementById('graph-relations');
+  if(S.graph.edges.length===0){rl.textContent='Nenhuma relação ainda.';return;}
+  rl.innerHTML=S.graph.edges.map(([a,b])=>{
+    const na=S.graph.nodes.find(n=>n.id===a)?.label||a;
+    const nb=S.graph.nodes.find(n=>n.id===b)?.label||b;
+    return `<div style="margin-bottom:.3rem">• ${na} ↔ ${nb}</div>`;
+  }).join('');
+}
+function nodeClick(e){
+  const id=e.currentTarget.dataset.id;
+  if(graphMode==='connect'){
+    if(!selectedNode){selectedNode=id;toast('Agora clique no segundo nó');renderGraph();return;}
+    if(selectedNode!==id){
+      const edge=[selectedNode,id];
+      const exists=S.graph.edges.some(([a,b])=>(a===edge[0]&&b===edge[1])||(a===edge[1]&&b===edge[0]));
+      if(!exists){S.graph.edges.push(edge);ss();toast('Conexão criada!');}
+      selectedNode=null;graphMode='add';renderGraph();
+    }
+  } else if(graphMode==='delete'){
+    S.graph.nodes=S.graph.nodes.filter(n=>n.id!==id);
+    S.graph.edges=S.graph.edges.filter(([a,b])=>a!==id&&b!==id);
+    ss();graphMode='add';renderGraph();toast('Nó removido');
+  }
+}
+function startDrag(e){
+  if(graphMode!=='add')return;
+  dragging=e.currentTarget.dataset.id;
+  const canvas=document.getElementById('graph-canvas');
+  const rect=canvas.getBoundingClientRect();
+  const cl=e.changedTouches?e.changedTouches[0]:e;
+  const node=S.graph.nodes.find(n=>n.id===dragging);
+  dragOff.x=(node.x/100*rect.width)-(cl.clientX-rect.left);
+  dragOff.y=(node.y/100*rect.height)-(cl.clientY-rect.top);
+  e.preventDefault();
+}
+document.addEventListener('pointermove',e=>{
+  if(!dragging)return;
+  const canvas=document.getElementById('graph-canvas');
+  const rect=canvas.getBoundingClientRect();
+  const cl=e.changedTouches?e.changedTouches[0]:e;
+  const node=S.graph.nodes.find(n=>n.id===dragging);
+  if(node){
+    node.x=Math.max(5,Math.min(95,((cl.clientX-rect.left+dragOff.x)/rect.width)*100));
+    node.y=Math.max(5,Math.min(95,((cl.clientY-rect.top+dragOff.y)/rect.height)*100));
+    renderGraph();
+  }
+});
+document.addEventListener('pointerup',()=>{if(dragging){ss();dragging=null;}});
+function addGraphNode(){
+  const label=prompt('Nome do nó:');
+  if(!label)return;
+  S.graph.nodes.push({id:'g'+S.nextId++,label:label.trim(),x:30+Math.random()*40,y:25+Math.random()*50});
+  ss();renderGraph();toast('Nó adicionado!');
+}
+function clearGraph(){
+  if(!confirm('Limpar o grafo?'))return;
+  S.graph={nodes:[],edges:[]};ss();renderGraph();
+}
+
+/* ══ FOCO / POMODORO ══ */
+let pomoInterval=null;
+const POMO_PHASES={focus:{time:25*60,label:'FOCO'},short:{time:5*60,label:'PAUSA CURTA'},long:{time:15*60,label:'PAUSA LONGA'}};
+function togglePomo(){
+  if(S.pomo.running){clearInterval(pomoInterval);S.pomo.running=false;document.getElementById('pomo-btn').textContent='▶ Retomar';ss();}
+  else{S.pomo.running=true;document.getElementById('pomo-btn').textContent='⏸ Pausar';
+    pomoInterval=setInterval(()=>{
+      S.pomo.remaining--;
+      if(S.pomo.remaining<=0){
+        clearInterval(pomoInterval);S.pomo.running=false;
+        S.pomo.sessions++;
+        toast(S.pomo.phase==='focus'?'🎉 Sessão completa! Descanse.':'✅ Pausa encerrada. Vamos lá!');
+        S.pomo.phase=S.pomo.phase==='focus'?S.pomo.sessions%4===0?'long':'short':'focus';
+        S.pomo.remaining=POMO_PHASES[S.pomo.phase].time;
+        earnXP(15);ss();renderPomoUI();
+      }else{renderPomoUI();ss();}
+    },1000);
+  }
+}
+function resetPomo(){
+  clearInterval(pomoInterval);S.pomo={running:false,phase:'focus',remaining:25*60,sessions:S.pomo.sessions};
+  document.getElementById('pomo-btn').textContent='▶ Iniciar';renderPomoUI();ss();
+}
+function renderPomoUI(){
+  const phase=POMO_PHASES[S.pomo.phase];
+  const r=S.pomo.remaining;
+  const m=Math.floor(r/60),s=r%60;
+  document.getElementById('pomo-display').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  document.getElementById('pomo-phase').textContent=phase.label;
+  const total=phase.time,pct=1-(r/total);
+  const circ=Math.PI*2*88;
+  const el=document.getElementById('pomo-circle');
+  el.style.strokeDashoffset=circ*(1-pct);
+  el.style.stroke=S.pomo.phase==='focus'?'var(--blue)':'var(--green)';
+}
+renderPomoUI();
+function startNoTool(){
+  const q=document.getElementById('no-tool-q').value.trim();
+  if(!q){toast('Digite um conceito para testar!');return;}
+  document.getElementById('nt-challenge').textContent=q;
+  document.getElementById('nt-answer').value='';
+  openModal('modal-no-tool');
+}
+function submitNoTool(){
+  const ans=document.getElementById('nt-answer').value.trim();
+  if(!ans){toast('Escreva sua resposta!');return;}
+  earnXP(10);ss();closeModal('modal-no-tool');
+  toast('Resposta registrada! +10 XP 🧠');
+}
+
+/* ══ FEED ══ */
+const FP_TYPES=['💭 Reflexão','💡 Insight','📖 Resumo','❓ Dúvida'];
+let fpTypeIdx=0;
+function cycleFpType(){fpTypeIdx=(fpTypeIdx+1)%FP_TYPES.length;document.getElementById('fp-type-btn').textContent=FP_TYPES[fpTypeIdx];}
+function publishPost(){
+  if(S.settings.limitFeed){
+    const today=new Date().toDateString();
+    if(S.feedPostDate!==today){S.feedPostDate=today;S.feedPostsToday=0;}
+    if(S.feedPostsToday>=5){toast('Limite diário de 5 posts atingido!');document.getElementById('feed-limit-warn').style.display='block';return;}
+    S.feedPostsToday++;
+  }
+  const body=document.getElementById('fp-body').value.trim();
+  const question=document.getElementById('fp-question').value.trim();
+  if(!body){toast('Escreva algo!');return;}
+  S.feed.unshift({
+    id:'fp'+S.nextId++,author:S.name,av:'🧠',
+    type:FP_TYPES[fpTypeIdx].split(' ')[1].toLowerCase(),
+    body,question,reactions:{entendi:0,duvida:0,exemplo:0},myReaction:null,
+    time:'agora',
+  });
+  earnXP(8);ss();renderFeed();closeModal('modal-feed-post');
+  document.getElementById('fp-body').value='';document.getElementById('fp-question').value='';
+  toast('Post publicado! 📰');
+}
+function reactPost(id,type){
+  const p=S.feed.find(x=>x.id===id);if(!p)return;
+  if(p.myReaction===type){p.reactions[type]--;p.myReaction=null;}
+  else{if(p.myReaction)p.reactions[p.myReaction]--;p.reactions[type]++;p.myReaction=type;}
+  earnXP(2);ss();renderFeed();
+}
+function savePostToNote(id){
+  const p=S.feed.find(x=>x.id===id);if(!p)return;
+  S.notes.unshift({id:S.nextId++,title:'Do Feed: '+p.body.substring(0,40),content:p.body,folder:'recursos',date:new Date().toLocaleDateString('pt-BR'),interp:'',context:'',limit:'',counter:'',emotion:'',connections:[]});
+  earnXP(5);ss();renderNotes();toast('Salvo nas notas! 📝');
+}
+function genFCFromPost(id){
+  const p=S.feed.find(x=>x.id===id);if(!p)return;
+  S.flashcards.push({id:'fc'+S.nextId++,q:p.question||'O que você aprendeu com: '+p.body.substring(0,40)+'?',a:p.body,cat:'geral',ease:0,nextReview:0,count:0});
+  earnXP(5);ss();renderFlashcards();toast('Flashcard gerado! 🃏');
+}
+function renderFeed(){
+  const limit=S.settings.limitFeed;
+  const today=new Date().toDateString();
+  if(S.feedPostDate!==today)S.feedPostsToday=0;
+  document.getElementById('feed-limit-warn').style.display=(limit&&S.feedPostsToday>=5)?'block':'none';
+  const c=document.getElementById('feed-list');
+  if(!S.feed.length){c.innerHTML=`<div class="empty-state">Nenhum post ainda.</div>`;return;}
+  c.innerHTML=S.feed.map(p=>`
+    <div class="feed-card">
+      <div class="fc-head">
+        <div class="fc-av">${p.av}</div>
+        <div class="fc-meta"><div class="fc-author">${p.author}</div><div class="fc-time">${p.time} · ${p.type}</div></div>
+      </div>
+      <div class="fc-body">${p.body}</div>
+      ${p.question?`<div class="fc-question">❓ ${p.question}</div>`:''}
+      <div class="fc-actions">
+        <div class="fc-react ${p.myReaction==='entendi'?'active':''}" onclick="reactPost('${p.id}','entendi')">✅ entendi (${p.reactions.entendi})</div>
+        <div class="fc-react ${p.myReaction==='duvida'?'active':''}" onclick="reactPost('${p.id}','duvida')">🤔 dúvida (${p.reactions.duvida})</div>
+        <div class="fc-react ${p.myReaction==='exemplo'?'active':''}" onclick="reactPost('${p.id}','exemplo')">💡 quero ex. (${p.reactions.exemplo})</div>
+      </div>
+      <div style="display:flex;gap:.4rem;padding:0 .85rem .75rem">
+        <button class="btn btn-sm" onclick="savePostToNote('${p.id}')">📝 Salvar nota</button>
+        <button class="btn btn-sm" onclick="genFCFromPost('${p.id}')">🃏 Flashcard</button>
+      </div>
+    </div>`).join('');
+}
+
+/* ══ ANÁLISE / BIAS ══ */
+const BIAS_TYPES=[
+  {name:'Viés de Confirmação',desc:'Buscar apenas informações que confirmem crenças já existentes.',key:/(sempre|nunca|óbvio|claro que|todo mundo sabe|comprovado)/i,weight:.3},
+  {name:'Generalização',desc:'Transformar casos particulares em regras universais.',key:/(todos|ninguém|sempre|jamais|toda vez|absolutamente)/i,weight:.25},
+  {name:'Apelo à Autoridade',desc:'Aceitar algo como verdade apenas por quem disse.',key:/(especialistas dizem|estudos provam|cientistas afirmam|a ciência diz)/i,weight:.2},
+  {name:'Pensamento Dicotômico',desc:'Ver o mundo em apenas dois polos, sem nuances.',key:/(ou.*ou|tudo ou nada|certo ou errado|bom ou ruim)/i,weight:.25},
+];
+function analyzeBias(){
+  const txt=document.getElementById('bias-input').value.trim();
+  if(!txt){toast('Cole um texto para analisar!');return;}
+  const found=BIAS_TYPES.filter(b=>b.key.test(txt));
+  const score=Math.min(100,found.reduce((a,b)=>a+b.weight*100,0));
+  const box=document.getElementById('bias-result');
+  box.style.display='block';
+  box.innerHTML=`<div class="win" style="margin-bottom:.75rem">
+    <div class="win-title"><div class="win-dot r"></div><div class="win-dot y"></div>Resultado da Análise</div>
+    <div class="win-body">
+      <div class="bias-meter">
+        <div class="bias-label"><span>Viés detectado</span><span>${Math.round(score)}%</span></div>
+        <div class="bias-bar-wrap"><div class="bias-fill" style="width:${score}%;background:${score>60?'var(--red)':score>30?'var(--yellow)':'var(--green)'}"></div></div>
+        <div style="font-size:.78rem;color:var(--ink2);margin-top:.5rem">${score<30?'Texto relativamente equilibrado':score<60?'Atenção: alguns vieses identificados':'Alto grau de viés — leia criticamente'}</div>
+      </div>
+      ${found.length?found.map(b=>`<div style="margin-bottom:.6rem;padding:.6rem;background:var(--bg);border:1.5px solid var(--bdr);border-radius:var(--r)"><div style="font-family:'Courier Prime',monospace;font-size:.72rem;font-weight:700;margin-bottom:.2rem">${b.name}</div><div style="font-size:.78rem;color:var(--ink2)">${b.desc}</div></div>`).join(''):`<div style="color:var(--green2);font-family:'Courier Prime',monospace;font-size:.82rem">✅ Nenhum viés evidente detectado.</div>`}
+      ${found.length?`<div style="margin-top:.75rem;background:rgba(168,195,160,.15);border:1.5px solid var(--green2);border-radius:var(--r);padding:.65rem;font-size:.8rem;color:var(--ink2)">💡 <strong>Contraponto sugerido:</strong> Busque perspectivas opostas e fontes primárias.</div>`:''}
+    </div>
+  </div>`;
+  earnXP(10);ss();toast('Análise concluída! +10 XP 🔬');
+}
+function addIgnorancia(){
+  const v=document.getElementById('ig-input').value.trim();
+  if(!v)return;
+  S.ignorancias.push({id:S.nextId++,text:v});
+  ss();renderAnalise();document.getElementById('ig-input').value='';toast('Adicionado à lista!');
+}
+function renderAnalise(){
+  const il=document.getElementById('ig-list');
+  if(il){
+    if(!S.ignorancias.length){il.innerHTML=`<div style="font-size:.78rem;color:var(--ink3);font-family:'Courier Prime',monospace;font-style:italic">Nenhum item ainda.</div>`;}
+    else il.innerHTML=S.ignorancias.map(ig=>`<div style="display:flex;gap:.5rem;align-items:center;margin-bottom:.4rem;padding:.4rem .65rem;background:var(--bg);border:1.5px solid var(--bdr);border-radius:var(--r)"><span style="flex:1;font-size:.82rem">${ig.text}</span><button style="background:none;border:none;color:var(--ink3);cursor:pointer;font-size:.8rem" onclick="S.ignorancias=S.ignorancias.filter(x=>x.id!=${ig.id});ss();renderAnalise()">✕</button></div>`).join('');
+  }
+  // cog progress
+  const cp=document.getElementById('cog-progress-box');
+  if(cp){
+    const total=S.flashcards.length+S.notes.length;
+    const xp=S.xp;
+    cp.innerHTML=`
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
+        <div style="text-align:center;padding:.6rem;border:1.5px solid var(--bdr);border-radius:var(--r)">
+          <div style="font-family:'Special Elite',serif;font-size:1.4rem;color:var(--blue2)">${S.notes.length}</div>
+          <div style="font-size:.68rem;font-family:'Courier Prime',monospace;color:var(--ink3)">Notas</div>
+        </div>
+        <div style="text-align:center;padding:.6rem;border:1.5px solid var(--bdr);border-radius:var(--r)">
+          <div style="font-family:'Special Elite',serif;font-size:1.4rem;color:var(--yellow)">${S.flashcards.length}</div>
+          <div style="font-size:.68rem;font-family:'Courier Prime',monospace;color:var(--ink3)">Flashcards</div>
+        </div>
+        <div style="text-align:center;padding:.6rem;border:1.5px solid var(--bdr);border-radius:var(--r)">
+          <div style="font-family:'Special Elite',serif;font-size:1.4rem;color:var(--green2)">${xp}</div>
+          <div style="font-size:.68rem;font-family:'Courier Prime',monospace;color:var(--ink3)">XP Total</div>
+        </div>
+        <div style="text-align:center;padding:.6rem;border:1.5px solid var(--bdr);border-radius:var(--r)">
+          <div style="font-family:'Special Elite',serif;font-size:1.4rem;color:var(--red)">${S.ignorancias.length}</div>
+          <div style="font-size:.68rem;font-family:'Courier Prime',monospace;color:var(--ink3)">Ignorâncias</div>
+        </div>
+      </div>`;
+  }
+}
+
+/* ══ PROFILE / XP ══ */
+function earnXP(n){
+  S.xp=(S.xp||0)+n;
+  const today=new Date().toDateString();
+  if(!S._lastActive||S._lastActive!==today){S._lastActive=today;S.streak[6]=true;}
+  ss();
+}
+function renderProfile(){
+  document.getElementById('profile-name-disp').textContent=S.name||'Estudante';
+  const lvl=Math.floor(S.xp/100)+1;
+  const xpInLevel=S.xp%100;
+  document.getElementById('profile-level').textContent=lvl;
+  document.getElementById('profile-xp').textContent=S.xp;
+  document.getElementById('xp-fill').style.width=xpInLevel+'%';
+  document.getElementById('xp-next-label').textContent=`${xpInLevel}/100 XP para nível ${lvl+1}`;
+  // skills
+  const skills=[
+    {name:'Organização',val:Math.min(100,S.pkm.projetos.length*15+S.pkm.areas.length*10),color:'var(--blue)'},
+    {name:'Memória',val:Math.min(100,S.flashcards.length*8),color:'var(--green2)'},
+    {name:'Análise',val:Math.min(100,S.notes.filter(n=>n.counter||n.limit).length*20),color:'var(--yellow)'},
+    {name:'Foco',val:Math.min(100,S.pomo.sessions*10),color:'var(--red)'},
+  ];
+  document.getElementById('skill-grid').innerHTML=skills.map(s=>`
+    <div class="skill-item">
+      <div class="sk-name">${s.name}</div>
+      <div class="sk-bar"><div class="sk-fill" style="width:${s.val}%;background:${s.color}"></div></div>
+      <div style="font-size:.65rem;color:var(--ink3);margin-top:.2rem;font-family:'Courier Prime',monospace">${s.val}%</div>
+    </div>`).join('');
+  // settings
+  const sl=document.getElementById('settings-list');
+  const sets=[
+    {key:'limitFeed',label:'Limitar posts diários (anti-vício)',icon:'📵'},
+    {key:'dailyReminder',label:'Lembrete de revisão diária',icon:'⏰'},
+    {key:'offlineMode',label:'Modo básico simples',icon:'🌿'},
+  ];
+  sl.innerHTML=sets.map(s=>`
+    <div class="setting-row">
+      <span style="font-size:1rem">${s.icon}</span>
+      <span style="flex:1;font-size:.85rem">${s.label}</span>
+      <div class="toggle ${S.settings[s.key]?'on':''}" onclick="toggleSetting('${s.key}',this)"></div>
+    </div>`).join('');
+}
+function toggleSetting(key,el){
+  S.settings[key]=!S.settings[key];el.classList.toggle('on',S.settings[key]);ss();toast(S.settings[key]?'Ativado':'Desativado');
+}
+function loadProfileAv(input){
+  const f=input.files[0];if(!f)return;
+  const r=new FileReader();r.onload=e=>{
+    document.getElementById('profile-av-emoji').style.display='none';
+    const img=document.getElementById('profile-av-img');
+    img.src=e.target.result;img.style.display='block';
+    S.profileAv=e.target.result;ss();toast('Foto atualizada!');
+  };r.readAsDataURL(f);
+}
+</script>
+</body>
+</html>
